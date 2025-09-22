@@ -32,7 +32,7 @@ The converter also adds Endor-specific context to the **Evidence** section (Call
 
 ---
 
-## Script Parameters & Examples
+## Script Parameters
 
 The converter turns Endor’s `endor-results.json` into a GitLab Dependency Scanning report.
 
