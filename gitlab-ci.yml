@@ -1,0 +1,44 @@
+stages: [scan, convert]
+
+endor_dependency_scan:
+  stage: scan
+  image: maven:3.8-openjdk-11
+  variables:
+    ENDOR_NAMESPACE: "endor-solutions-tsaekao"
+    ENDOR_PROJECT_DIR: "."
+    ENDOR_ARGS: >
+      --path=${ENDOR_PROJECT_DIR}
+      --exit-on-policy-warning
+      --dependencies --secrets --git-logs
+  before_script:
+    - mvn -B -DskipTests clean install
+    - curl -fsSL https://api.endorlabs.com/download/latest/endorctl_linux_amd64 -o endorctl
+    - echo "$(curl -fsSL https://api.endorlabs.com/sha/latest/endorctl_linux_amd64)  endorctl" | sha256sum -c -
+    - chmod +x ./endorctl
+  script:
+    - >
+      ./endorctl scan ${ENDOR_ARGS}
+      --namespace "$ENDOR_NAMESPACE"
+      --api-key "$ENDOR_API_CREDENTIALS_KEY"
+      --api-secret "$ENDOR_API_CREDENTIALS_SECRET"
+      --output-type json | tee endor-results.json
+  artifacts:
+    when: always
+    paths: [endor-results.json]
+
+convert_endor_to_gitlab:
+  stage: convert
+  image: python:3.11-slim
+  needs: ["endor_dependency_scan"]
+  script:
+    - python endor_to_gitlab_dep_scan.py --input endor-results.json --output gl-dependency-scanning-report.json
+  artifacts:
+    when: always
+    expire_in: 14 days
+    reports:
+      dependency_scanning: gl-dependency-scanning-report.json
+    paths:
+      - gl-dependency-scanning-report.json
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: on_success
