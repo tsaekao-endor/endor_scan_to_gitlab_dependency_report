@@ -37,10 +37,7 @@ The converter also adds Endor-specific context to the **Evidence** section (Call
 The converter turns Endor’s `endor-results.json` into a GitLab Dependency Scanning report.
 
 ```bash
-usage: endor_to_gitlab_dep_scan.py [-h] --input INPUT [--output OUTPUT] [--csv CSV]
-
 Arguments:
-  -h, --help            show this help message and exit
   --input INPUT, -i INPUT
                         Path to Endor endor-results.json (required)
   --output OUTPUT, -o OUTPUT
