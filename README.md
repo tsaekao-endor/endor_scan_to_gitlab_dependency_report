@@ -38,7 +38,7 @@ The converter turns Endor’s `endor-results.json` into a GitLab Dependency Scan
 
 ### Usage
 ```bash
-python endor_to_gitlab_dep_scan.py --input <endor-results.json> [--output <gl-report.json>] [--csv <summary.csv> OPTIONAL]
+python endor_to_gitlab_dep_scan.py --input <endor-results.json> --output <gl-report.json> [--csv <summary.csv> OPTIONAL]
 
 
 
