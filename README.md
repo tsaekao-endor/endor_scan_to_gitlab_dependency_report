@@ -32,32 +32,13 @@ The converter also adds Endor-specific context to the **Evidence** section (Call
 
 ---
 
-Script parameters & examples
+## Script Parameters & Examples
 
-The converter turns Endor’s endor-results.json into a GitLab Dependency Scanning v15 report.
+The converter turns Endor’s `endor-results.json` into a GitLab Dependency Scanning **v15** report.
 
-Usage
-
-python endor_to_gitlab_dep_scan.py --input <endor-results.json> [--output <gl-report.json>] [--csv <summary.csv>]
-
-
-Parameters
-
---input, -i (required)
-Path to the Endor JSON produced by endorctl scan --output-type json.
-Example: endor-results.json
-
---output, -o (default: gl-dependency-scanning-report.json)
-Where to write the GitLab DS v15 report. Attach this file in your CI job under:
-
-artifacts:
-  reports:
-    dependency_scanning: gl-dependency-scanning-report.json
+### Usage
+```bash
+python endor_to_gitlab_dep_scan.py --input <endor-results.json> [--output <gl-report.json>] [--csv <summary.csv> OPTIONAL]
 
 
---csv (default: endor-findings.csv)
-Optional convenience CSV for quick triage (package, version, manifest, severity, id).
-Pass an empty string to disable:
-
---csv ""
 
